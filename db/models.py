@@ -2,7 +2,7 @@
 import uuid
 import datetime
 
-from sqlalchemy import types, text
+from sqlalchemy import types, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -20,9 +20,7 @@ class User(Base):
     last_name: Mapped[str]
     email: Mapped[str] = mapped_column(unique=True)
     is_active: Mapped[bool] = mapped_column(default=True)
-    created_at: Mapped[datetime.datetime] = mapped_column(
-        server_default=text("TIMEZONE('utc', now())")
-    )
+    created_at: Mapped[datetime.datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(
-        server_default=text("TIMEZONE('utc', now())"), onupdate=datetime.datetime.now
+        server_default=func.now(), onupdate=func.now()
     )
