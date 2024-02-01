@@ -35,6 +35,7 @@ class CreateUser(TunedModel):
     first_name: str
     last_name: str
     email: EmailStr
+    password: str
 
     @field_validator("first_name")
     def validate_first_name(value):
@@ -73,3 +74,8 @@ class UpdateUser(TunedModel):
                 status_code=422, detail="Last name should contains only letters"
             )
         return value
+
+
+class Token(TunedModel):
+    access_token: str
+    token_type: str
