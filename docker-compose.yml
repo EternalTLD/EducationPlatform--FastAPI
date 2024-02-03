@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build:
+      context: .
+    container_name: "e-back"
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+    depends_on:
+      - database
+
+  database:
+    image: postgres:15.4-alpine
+    container_name: "db"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - custom
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+networks:
+  custom:
+    driver: bridge
+
+volumes:
+  db_data:

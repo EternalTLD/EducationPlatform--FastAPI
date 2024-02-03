@@ -1,16 +1,13 @@
-"""ORM models"""
+"""Users models"""
 import uuid
 import datetime
 
 from sqlalchemy import types, func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
+from .base import BaseModel
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-class User(Base):
+class User(BaseModel):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(
