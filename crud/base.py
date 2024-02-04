@@ -1,7 +1,7 @@
 import uuid
 from typing import TypeVar, Generic
 
-from sqlalchemy import update
+from sqlalchemy import update, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.base import BaseModel
@@ -27,13 +27,14 @@ class BaseCRUD(Generic[Model]):
         await self.session.refresh(instance)
         return instance
 
-    async def update(self, id: uuid.UUID, **kwargs) -> Model | None:
-        instance = await self.session.execute(
-            update(self.model)
-            .where(self.model.id == id)
-            .values(**kwargs)
-            .returning(self.model)
+    async def update(self, id: uuid.UUID, **kwargs) -> Model:
+        await self.session.execute(
+            update(self.model).where(self.model.id == id).values(**kwargs)
         )
         await self.session.commit()
-        await self.session.refresh(instance)
-        return instance.scalar_one_or_none()
+
+        updated_instance = await self.session.execute(
+            select(self.model).where(self.model.id == id)
+        )
+
+        return updated_instance.scalar_one()
