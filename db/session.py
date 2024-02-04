@@ -3,10 +3,10 @@ from typing import Generator
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
-from config.settings import db_settings
+from config.settings import DBSettings
 
 
-engine = create_async_engine(db_settings.DATABASE_URL, echo=True)
+engine = create_async_engine(DBSettings().DATABASE_URL, echo=True)
 
 async_session = async_sessionmaker(engine, expire_on_commit=True)
 

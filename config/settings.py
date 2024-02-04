@@ -16,9 +16,6 @@ class DBSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
 
-db_settings = DBSettings()
-
-
 class JWTSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     SECRET_KEY: str = "some_secrete_key"
