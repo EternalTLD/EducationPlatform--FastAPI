@@ -1,18 +1,16 @@
 """Users models"""
-import uuid
 import datetime
 
-from sqlalchemy import types, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from .base import BaseModel
+from .videos import Video
 
 
 class User(BaseModel):
     __tablename__ = "users"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        types.Uuid, primary_key=True, default=uuid.uuid4
-    )
     first_name: Mapped[str]
     last_name: Mapped[str]
     email: Mapped[str] = mapped_column(unique=True)
@@ -22,3 +20,4 @@ class User(BaseModel):
         server_default=func.now(), onupdate=func.now()
     )
     hashed_password: Mapped[str] = mapped_column()
+    video: Mapped["Video"] = relationship(back_populates="user")
