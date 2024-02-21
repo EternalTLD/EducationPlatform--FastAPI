@@ -1,23 +1,22 @@
-import shutil
+from fastapi import APIRouter, File, UploadFile, Depends, BackgroundTasks
 
-from fastapi import APIRouter, File, UploadFile, Depends
-
-from schemas.videos import VideoUpload, VideoResponse
+from schemas.videos import VideoUploadSchema, VideoResponseSchema
 from api.auth.endpoints import get_current_user
-from models.users import User
+from models.users import UserModel
+from .tasks import save_video
 
 videos_router = APIRouter()
 
 
-@videos_router.post("/upload", response_model=VideoResponse)
+@videos_router.post("/upload", response_model=VideoResponseSchema)
 async def upload_video(
-    data: VideoUpload = Depends(),
-    video: UploadFile = File(...),
-    request_user: User = Depends(get_current_user),
-) -> VideoResponse:
-    with open(f"{video.filename}", "wb") as buffer:
-        shutil.copyfileobj(video.file, buffer)
-    return VideoResponse(
+    background_tasks: BackgroundTasks,
+    data: VideoUploadSchema = Depends(),
+    video: UploadFile = File(),
+    request_user: UserModel = Depends(get_current_user),
+) -> VideoResponseSchema:
+    background_tasks.add_task(save_video, video.filename, video.file)
+    return VideoResponseSchema(
         user=request_user,
         filename=video.filename,
         title=data.title,
