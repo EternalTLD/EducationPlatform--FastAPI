@@ -3,19 +3,19 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from crud.users import UserCRUD
-from models.users import User
-from schemas.users import UserResponse, UserUpdate
+from models.users import UserModel
+from schemas.users import UserResponseSchema, UserUpdateSchema
 from api.auth.endpoints import get_current_user
 
 user_router = APIRouter()
 
 
-@user_router.get("/{id}", response_model=UserResponse)
+@user_router.get("/{id}", response_model=UserResponseSchema)
 async def get_user(
     id: uuid.UUID,
     user_crud: UserCRUD,
-    request_user: User = Depends(get_current_user),
-) -> UserResponse:
+    request_user: UserModel = Depends(get_current_user),
+) -> UserResponseSchema:
     user = await user_crud.get_by_id(id)
     if user is None:
         raise HTTPException(
@@ -25,12 +25,12 @@ async def get_user(
     return user
 
 
-@user_router.delete("/{id}", response_model=UserResponse)
+@user_router.delete("/{id}", response_model=UserResponseSchema)
 async def delete_user(
     id: uuid.UUID,
     user_crud: UserCRUD,
-    request_user: User = Depends(get_current_user),
-) -> UserResponse:
+    request_user: UserModel = Depends(get_current_user),
+) -> UserResponseSchema:
     if request_user.id != id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="You can't delete other user"
@@ -45,13 +45,13 @@ async def delete_user(
     return user
 
 
-@user_router.put("/{id}", response_model=UserResponse)
+@user_router.put("/{id}", response_model=UserResponseSchema)
 async def update_user(
     id: uuid.UUID,
-    data: UserUpdate,
+    data: UserUpdateSchema,
     user_crud: UserCRUD,
-    request_user: User = Depends(get_current_user),
-) -> UserResponse:
+    request_user: UserModel = Depends(get_current_user),
+) -> UserResponseSchema:
     if request_user.id != id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="You can't update other user"

@@ -1,14 +1,15 @@
 """Users models"""
 import datetime
+from typing import Optional
 
 from sqlalchemy import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import BaseModel
-from .videos import Video
+from .videos import *
 
 
-class User(BaseModel):
+class UserModel(BaseModel):
     __tablename__ = "users"
 
     first_name: Mapped[str]
@@ -20,4 +21,4 @@ class User(BaseModel):
         server_default=func.now(), onupdate=func.now()
     )
     hashed_password: Mapped[str] = mapped_column()
-    video: Mapped["Video"] = relationship(back_populates="user")
+    videos: Mapped[Optional[list["VideoModel"]]] = relationship(back_populates="user")

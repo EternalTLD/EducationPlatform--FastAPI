@@ -2,19 +2,19 @@ import re
 
 from pydantic import EmailStr
 
-from .base import BaseScheme
+from .base import BaseSchema
 from .validators import UserFieldsValidator
 
 
 LETTERS_PATTERN = re.compile(r"[a-zA-Zа-яА-Я\-]+$")
 
 
-class Token(BaseScheme):
+class TokenSchema(BaseSchema):
     access_token: str
     token_type: str
 
 
-class SingUp(UserFieldsValidator, BaseScheme):
+class SingUpSchema(UserFieldsValidator, BaseSchema):
     first_name: str
     last_name: str
     email: EmailStr

@@ -4,20 +4,20 @@ from jose import JWTError, jwt
 
 
 from config.settings import JWTSettings
-from models.users import User
+from models.users import UserModel
 from crud.users import UserCRUD
-from schemas.auth import Token, SingUp
-from schemas.users import UserResponse
+from schemas.auth import TokenSchema, SingUpSchema
+from schemas.users import UserResponseSchema
 from utils.token import create_access_token
 from utils.hasher import Hasher
 
 auth_router = APIRouter()
 
 
-@auth_router.post("/login", response_model=Token)
+@auth_router.post("/login", response_model=TokenSchema)
 async def login(
     user_crud: UserCRUD, form_data: OAuth2PasswordRequestForm = Depends()
-) -> Token:
+) -> TokenSchema:
     user = await user_crud.authenticate(form_data.username, form_data.password)
     if user is None:
         raise HTTPException(
@@ -26,7 +26,7 @@ async def login(
         )
 
     access_token = create_access_token(user.email)
-    return Token(access_token=access_token, token_type="bearer")
+    return TokenSchema(access_token=access_token, token_type="bearer")
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -34,7 +34,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 async def get_current_user(
     user_crud: UserCRUD, token: str = Depends(oauth2_scheme)
-) -> User:
+) -> UserModel:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -57,8 +57,8 @@ async def get_current_user(
     return user
 
 
-@auth_router.post("/signup", response_model=UserResponse)
-async def sing_up(data: SingUp, user_crud: UserCRUD) -> UserResponse:
+@auth_router.post("/signup", response_model=UserResponseSchema)
+async def sing_up(data: SingUpSchema, user_crud: UserCRUD) -> UserResponseSchema:
     user = await user_crud.get_by_email(data.email)
     if user is not None:
         raise HTTPException(

@@ -1,5 +1,5 @@
-from models.users import User
+from models.users import UserModel
 
 
-def check_user_permission(current_user: User, target_user: User):
+def check_user_permission(current_user: UserModel, target_user: UserModel):
     pass

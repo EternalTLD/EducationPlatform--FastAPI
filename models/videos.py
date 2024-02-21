@@ -1,3 +1,4 @@
+"""Videos models"""
 import uuid
 import datetime
 
@@ -5,10 +6,10 @@ from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import BaseModel
-from .users import User
+from .users import *
 
 
-class Video(BaseModel):
+class VideoModel(BaseModel):
     __tablename__ = "videos"
 
     title: Mapped[str]
@@ -18,4 +19,4 @@ class Video(BaseModel):
         server_default=func.now(), onupdate=func.now()
     )
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship(back_populates="videos")
+    user: Mapped["UserModel"] = relationship(back_populates="videos")
