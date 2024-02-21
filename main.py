@@ -6,7 +6,7 @@ from api.auth.endpoints import auth_router
 from api.videos.endpoints import videos_router
 
 
-app = FastAPI(title="education-platform")
+app = FastAPI(title="VideoHosting")
 
 main_router = APIRouter()
 
