@@ -4,16 +4,13 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy import select
 
-from models.users import UserModel
+from models.videos import VideoModel
 from .base import BaseCRUD
 from .dependencies import get_crud
 
 
-class VideoBaseCRUD(BaseCRUD[UserModel]):
+class VideoBaseCRUD(BaseCRUD[VideoModel]):
     """Data access class for Video model"""
 
-    def get_video(self, id: uuid.UUID):
-        pass
 
-
-VideoCRUD = Annotated[VideoBaseCRUD, Depends(get_crud(UserModel, VideoBaseCRUD))]
+VideoCRUD = Annotated[VideoBaseCRUD, Depends(get_crud(VideoModel, VideoBaseCRUD))]
