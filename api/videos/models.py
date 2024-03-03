@@ -1,11 +1,12 @@
 """Videos models"""
-import uuid
 import datetime
+import uuid
 
-from sqlalchemy import func, ForeignKey
+from sqlalchemy import ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from base.models import BaseModel
+
 from ..users.models import *
 
 
