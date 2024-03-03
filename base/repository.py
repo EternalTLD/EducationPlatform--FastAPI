@@ -1,11 +1,10 @@
 import uuid
-from typing import TypeVar, Generic
+from typing import Generic, TypeVar
 
-from sqlalchemy import update, select, delete
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from base.models import BaseModel
-
 
 Model = TypeVar("Model", bound=BaseModel)
 
@@ -38,10 +37,20 @@ class BaseCRUD(Generic[Model]):
         )
 
         return updated_instance.scalar_one()
-    
+
     async def delete(self, id: uuid.UUID) -> Model | None:
         instance = await self.get_by_id(id)
         if instance:
             self.session.delete(instance)
             await self.session.commit()
         return instance
+
+    async def filter(self, **kwargs) -> list[Model]:
+        query = select(self.model).filter_by(**kwargs)
+        result = await self.session.execute(query)
+        return result.scalars().all()
+
+    async def get_all(self) -> list[Model]:
+        query = select(self.model)
+        result = await self.session.execute(query)
+        return result.scalars().all()
