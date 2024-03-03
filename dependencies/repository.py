@@ -3,9 +3,9 @@ from collections.abc import Callable
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.session import get_db_session
-from models.base import BaseModel
-from .base import BaseCRUD
+from dependencies.session import get_db_session
+from base.models import BaseModel
+from base.repository import BaseCRUD
 
 
 def get_crud(

@@ -5,8 +5,8 @@ from typing import Optional
 from sqlalchemy import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import BaseModel
-from .videos import *
+from base.models import BaseModel
+from ..videos.models import *
 
 
 class UserModel(BaseModel):

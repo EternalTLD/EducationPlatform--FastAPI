@@ -2,8 +2,8 @@ import re
 
 from pydantic import EmailStr
 
-from .base import BaseSchema
-from .validators import UserFieldsValidator
+from base.schemas import BaseSchema
+from base.validators import UserFieldsValidator
 
 
 LETTERS_PATTERN = re.compile(r"[a-zA-Zа-яА-Я\-]+$")

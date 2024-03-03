@@ -2,10 +2,10 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from crud.users import UserCRUD
-from models.users import UserModel
-from schemas.users import UserResponseSchema, UserUpdateSchema
-from api.auth.endpoints import get_current_user
+from ..auth.endpoints import get_current_user
+from .repository import UserCRUD
+from .models import UserModel
+from .schemas import UserResponseSchema, UserUpdateSchema
 
 user_router = APIRouter()
 

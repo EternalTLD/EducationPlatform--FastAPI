@@ -5,8 +5,8 @@ import datetime
 from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import BaseModel
-from .users import *
+from base.models import BaseModel
+from ..users.models import *
 
 
 class VideoModel(BaseModel):
@@ -14,6 +14,7 @@ class VideoModel(BaseModel):
 
     title: Mapped[str]
     description: Mapped[str]
+    filepath: Mapped[str]
     created_at: Mapped[datetime.datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(
         server_default=func.now(), onupdate=func.now()

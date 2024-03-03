@@ -4,12 +4,12 @@ from jose import JWTError, jwt
 
 
 from config.settings import JWTSettings
-from models.users import UserModel
-from crud.users import UserCRUD
-from schemas.auth import TokenSchema, SingUpSchema
-from schemas.users import UserResponseSchema
 from utils.token import create_access_token
 from utils.hasher import Hasher
+from ..users.models import UserModel
+from ..users.repository import UserCRUD
+from ..users.schemas import UserResponseSchema
+from .schemas import TokenSchema, SingUpSchema
 
 auth_router = APIRouter()
 

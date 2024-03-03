@@ -1,10 +1,10 @@
 import uuid
 from typing import Optional
 
-from pydantic import EmailStr, constr
+from pydantic import EmailStr
 
-from .base import BaseSchema
-from .validators import UserFieldsValidator
+from base.schemas import BaseSchema
+from base.validators import UserFieldsValidator
 
 
 class UserResponseSchema(BaseSchema):

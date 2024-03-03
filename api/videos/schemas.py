@@ -1,8 +1,7 @@
 import uuid
 import datetime
 
-from .base import BaseSchema
-from .users import UserResponseSchema
+from base.schemas import BaseSchema
 
 
 class VideoUploadSchema(BaseSchema):
@@ -10,10 +9,13 @@ class VideoUploadSchema(BaseSchema):
     description: str
 
 
+class VideoUpdateSchema(VideoUploadSchema):
+    pass
+
+
 class VideoResponseSchema(BaseSchema):
-    # id: uuid.UUID
-    filename: str
+    id: uuid.UUID
     title: str
     description: str
-    user: UserResponseSchema
-    # created_at: datetime.datetime
+    created_at: datetime.datetime
+    user_id: uuid.UUID

@@ -4,6 +4,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from api.videos import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -16,10 +17,10 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from models import base
-from models import users, videos
+from base import models
+from api.users import models
 
-target_metadata = base.BaseModel.metadata
+target_metadata = models.BaseModel.metadata
 # target_metadata = None
 
 # other values from the config, defined by the needs of env.py,

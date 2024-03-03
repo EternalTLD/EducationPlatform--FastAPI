@@ -1,12 +1,10 @@
-import uuid
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy import select
 
-from models.videos import VideoModel
-from .base import BaseCRUD
-from .dependencies import get_crud
+from base.repository import BaseCRUD
+from dependencies.repository import get_crud
+from .models import VideoModel
 
 
 class VideoBaseCRUD(BaseCRUD[VideoModel]):

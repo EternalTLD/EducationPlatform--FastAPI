@@ -2,11 +2,12 @@ import uuid
 
 from fastapi import APIRouter, File, HTTPException, UploadFile, Depends, BackgroundTasks, status
 
-from schemas.videos import VideoUploadSchema, VideoResponseSchema, VideoUpdateSchema
-from api.auth.endpoints import get_current_user
-from models.users import UserModel
-from crud.videos import VideoCRUD
-from .tasks import save_video, get_video_upload_path
+from ..auth.endpoints import get_current_user
+from ..users.models import UserModel
+from .schemas import VideoUploadSchema, VideoResponseSchema, VideoUpdateSchema
+from .repository import VideoCRUD
+from .tasks import save_video
+from .services import get_video_upload_path
 
 videos_router = APIRouter()
 
@@ -19,7 +20,7 @@ async def upload_video(
     video_file: UploadFile = File(),
     request_user: UserModel = Depends(get_current_user),
 ) -> VideoResponseSchema:
-    filepath = get_video_upload_path(video_file.filename)
+    filepath = get_video_upload_path(video_file.filename, request_user.id)
     background_tasks.add_task(save_video, video_file, filepath)
     video = await video_crud.create(
         title=data.title,
@@ -27,13 +28,15 @@ async def upload_video(
         filepath=filepath,
         user_id=request_user.id,
     )
-    return VideoResponseSchema(
-        id=video.id,
-        title=video.title,
-        description=video.description,
-        created_at=video.created_at,
-        user_id=video.user_id,
-    )
+    return video
+
+
+@videos_router.get("/{id}", response_model=VideoResponseSchema)
+async def get_video(id: uuid.UUID, video_crud: VideoCRUD):
+    video = await video_crud.get_by_id(id)
+    if video is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found.")
+    return video
 
 
 @videos_router.patch("/{id}", response_model=VideoResponseSchema)
@@ -59,10 +62,10 @@ async def delete_video(
     request_user: UserModel = Depends(get_current_user),
 ) -> VideoResponseSchema:
     video = await video_crud.get_by_id(id)
-    if video.user_id != request_user:
+    if video.user_id != request_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="You must be an author of video"
+            detail="You must be an author of video."
         )
 
     deleted_video = await video_crud.delete(id)

@@ -4,10 +4,10 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy import select
 
-from models.users import UserModel
 from utils.hasher import Hasher
-from .base import BaseCRUD
-from .dependencies import get_crud
+from base.repository import BaseCRUD
+from dependencies.repository import get_crud
+from .models import UserModel
 
 
 class UserBaseCRUD(BaseCRUD[UserModel]):
