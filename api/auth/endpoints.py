@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 
-
 from config.settings import JWTSettings
-from utils.token import create_access_token
 from utils.hasher import Hasher
+from utils.token import create_access_token
+
 from ..users.models import UserModel
 from ..users.repository import UserCRUD
 from ..users.schemas import UserResponseSchema
-from .schemas import TokenSchema, SingUpSchema
+from .schemas import SingUpSchema, TokenSchema
 
 auth_router = APIRouter()
 

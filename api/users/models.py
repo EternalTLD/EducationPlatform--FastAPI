@@ -6,6 +6,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from base.models import BaseModel
+
 from ..videos.models import *
 
 

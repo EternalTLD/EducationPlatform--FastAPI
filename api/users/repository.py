@@ -4,9 +4,10 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy import select
 
-from utils.hasher import Hasher
 from base.repository import BaseCRUD
 from dependencies.repository import get_crud
+from utils.hasher import Hasher
+
 from .models import UserModel
 
 

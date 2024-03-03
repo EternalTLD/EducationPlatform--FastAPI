@@ -4,7 +4,8 @@ from typing import Optional
 from pydantic import EmailStr
 
 from base.schemas import BaseSchema
-from base.validators import UserFieldsValidator
+
+from .validators import UserFieldsValidator
 
 
 class UserResponseSchema(BaseSchema):

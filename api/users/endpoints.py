@@ -3,8 +3,8 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from ..auth.endpoints import get_current_user
-from .repository import UserCRUD
 from .models import UserModel
+from .repository import UserCRUD
 from .schemas import UserResponseSchema, UserUpdateSchema
 
 user_router = APIRouter()
