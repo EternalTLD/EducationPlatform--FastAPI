@@ -1,18 +1,17 @@
 import uvicorn
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
 
-from api.users.endpoints import user_router
 from api.auth.endpoints import auth_router
+from api.users.endpoints import user_router
 from api.videos.endpoints import videos_router
-
 
 app = FastAPI(title="VideoHosting")
 
 main_router = APIRouter()
 
-main_router.include_router(user_router, prefix="/user", tags=["user"])
-main_router.include_router(auth_router, prefix="/auth", tags=["auth"])
-main_router.include_router(videos_router, prefix="/video", tags=["video"])
+main_router.include_router(user_router, prefix="/users", tags=["Users"])
+main_router.include_router(auth_router, prefix="/auth", tags=["Authentication"])
+main_router.include_router(videos_router, prefix="/videos", tags=["Videos"])
 
 app.include_router(main_router)
 
